@@ -1,7 +1,6 @@
 
 import edu.princeton.cs.algs4.StdRandom;
 
-import java.security.PublicKey;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -56,17 +55,36 @@ public class Deque<Item> implements Iterable<Item> {
         }
         N++;
     }
-    public void removeFirst(){ // remove item from the front of the list
+    public Item removeFirst(){ // remove item from the front of the list
         if(N==0) throw new NoSuchElementException("The deque is empty");
-        first = first.next;
-        first.prev = null;//avoid loitering
+        Item temp = first.item;
+        if(last == first){
+            first = null;
+            last = null;
+        }
+        else{
+            first = first.next;
+            first.prev = null;//avoid loitering
+        }
         N--;
+        return temp;
     }
-    public void removeLast(){//remove the item from the end of the list
+    private boolean pointing(){
+        return first.item == last.item;
+    }
+    public Item removeLast(){//remove the item from the end of the list
         if(N==0) throw new NoSuchElementException("The deque is empty");
-        last = last.prev;
-        last.next = null;//avoid loitering
+        Item temp = last.item;
+        if(last == first){
+            first = null;
+            last = null;
+        }
+        else{
+            last = last.prev;
+            last.next = null;//avoid loitering
+        }
         N--;
+        return temp;
     }
     public Iterator<Item> iterator(){//returns an iterator
         return new DequeIterator();
@@ -92,12 +110,10 @@ public class Deque<Item> implements Iterable<Item> {
 
     public static void main(String[] args) {
         Deque<Integer> deque = new Deque<>();
-        for(int i = 0; i < 9; i++){
-//            int random = StdRandom.uniform(1,100);
-            deque.addFirst(i);
-        }
-        for(Integer integer: deque){
-            System.out.println(integer);
+        deque.addLast(5);
+        deque.removeLast();
+        for(Integer i: deque){
+            System.out.println(i);
         }
     }
 }

@@ -22,6 +22,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return N;
     }                   // return the number of items on the randomized queue
     public void enqueue(Item item){
+        if(item  == null) throw new IllegalArgumentException();
         resizeQueue();
         queue[N++] = item;
     }           // add the item
@@ -59,9 +60,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         else throw new NoSuchElementException();
     }                    // remove and return a random item
-//    public Item sample(){
-//
-//    }                     // return a random item (but do not remove it)
+    public Item sample(){
+        if(isEmpty()) throw new NoSuchElementException();
+        return queue[StdRandom.uniform(N)];
+    }                     // return a random item (but do not remove it)
     public Iterator<Item> iterator(){
         return new iterator();
     }         // return an independent iterator over items in random order
@@ -82,7 +84,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if(i==N) throw new NoSuchElementException();
             return randomOrder[i++];
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
         }
     }
     public static void main(String[] args){
